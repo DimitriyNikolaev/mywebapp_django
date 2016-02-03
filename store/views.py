@@ -10,7 +10,7 @@ def main_page(request):
     args["current_group"] = None
     page = request.GET.get('p')
     filtered_goods = Paginator(all_good,6)
-    args["goods"] = filtered_goods.page(page if page != None else 1)
+    args["goods"] = filtered_goods.page(page if page is not None else 1)
     args["groups"] = Group.objects.all()
 
     return render_to_response('main.html',args)
@@ -24,7 +24,7 @@ def main_page_filtered(request, group = 0):
     args["current_group"] = Group.objects.get(id=group)
     page = request.GET.get('p')
     filtered_goods = Paginator(all_good,6)
-    args["goods"] = filtered_goods.page(page if page != None else 1)
+    args["goods"] = filtered_goods.page(page if page is not None else 1)
     args["groups"] = Group.objects.all()
 
     return render_to_response('main.html',args)
