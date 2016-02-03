@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title_name %}
+    <title>All Goods (Page: {{ goods.number }} in {{ goods.paginator.num_pages }})</title>
+{% endblock %}
+
+{% block center_content %}
+    <div class="row">
+        <div class="col-lg-2">
+            <a href="/"><img src="{% static 'img/logo.png' %}"/></a>
+            <div class="list-group">
+
+                {% if current_group == 0 %}
+                    <a href="/" class="list-group-item active">все товары</a>
+                {% else %}
+                    <a href="/" class="list-group-item">все товары</a>
+                {% endif %}
+
+                {% for group in groups %}
+                    {% if  group.id == current_group.id %}
+                        <a href="/category/{{ group.id }}/page/1/"
+                           class="list-group-item active">{{ group.group_name.lower }}</a>
+                    {% else %}
+                        <a href="/category/{{ group.id }}/page/1/"
+                           class="list-group-item">{{ group.group_name.lower }}</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="page-header">
+                <div class="row">
+                    {% if current_group == 0 %}
+                        <h1><small>Все товары</small></h1>
+                    {% else %}
+                        <h1><small>{{ current_group.group_name }}</small></h1>
+                    {% endif %}
+                </div>
+            </div>
+            {% if goods.paginator.count == 0 %}
+                <div class="col-sm-6 col-md-4">
+                    <h4><small>В данном разделе пока нет товаров</small></h4>
+                </div>
+            {% else %}
+                {% for good in goods %}
+                    <div class="col-sm-6 col-md-4">
+                        <div class="thumbnail">
+                            {% if good.good_image %}
+                                <img src="{{ good.good_image.url }}" width="250" height="200">
+                            {% else %}
+                                <img src="{% static 'img/blank.jpg' %}" width="250" height="200">
+                            {% endif %}
+                            <div class="caption">
+                                <p>
+                                <h3>{{ good.good_name }}</h3></p>
+
+                                <p><label>Производитель: </label>
+                                    {{ good.good_brand }}</p>
+
+                                <p><label>Код товара: </label>
+                                    {{ good.good_code }}</p>
+
+                                <p><label>Артикул: </label>
+                                    {{ good.good_article }}</p>
+
+                                <p><label>Цена: </label>
+                                    {{ good.good_price }}</p>
+                                <p><a href="#" class="btn btn-primary" role="button">Заказать</a>
+                                    <a href="#" class="btn btn-default" role="button">Подробнее</a></p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="text-center">
+        <div class="row">
+            <ul class="pagination">
+                {% if goods.paginator.num_pages > 1 %}
+                    {% if goods.has_previous %}
+                        <li><a href="/category/{{ current_group }}/page/{{ goods.previous_page_number }}/">&laquo;</a></li>
+                    {% else %}
+                        <li class="disabled"><a href="#">&laquo;</a></li>
+                    {% endif %}
+
+                    {% for page in goods.paginator.page_range %}
+                        {% if page == goods.number %}
+                            <li class="active"><a>{{ page }}</a></li>
+                        {% else %}
+                            <li><a href="/category/{{ current_group }}/page/{{ page }}/">{{ page }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if goods.has_next %}
+                        <li><a href="/category/{{current_group}}/page/{{ goods.next_page_number }}/">&raquo;</a></li>
+                    {% else %}
+                        <li class="disabled"><a href="#">&raquo;</a></li>
+                    {% endif %}
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
