@@ -46,6 +46,7 @@
                     <div class="col-sm-6 col-md-4">
                         <div class="thumbnail">
                             {% if good.good_image %}
+                                {{ good.good_image.url }}
                                 <img src="{{ good.good_image.url }}" width="250" height="200">
                             {% else %}
                                 <img src="{% static 'img/blank.jpg' %}" width="250" height="200">
