@@ -10,18 +10,18 @@
             <a href="/"><img src="{% static 'img/logo.png' %}"/></a>
             <div class="list-group">
 
-                {% if current_group == 0 %}
-                    <a href="/" class="list-group-item active">все товары</a>
+                {% if current_group == None %}
+                    <a href="#" class="list-group-item active">все товары</a>
                 {% else %}
-                    <a href="/" class="list-group-item">все товары</a>
+                    <a href="/all" class="list-group-item">все товары</a>
                 {% endif %}
 
                 {% for group in groups %}
                     {% if  group.id == current_group.id %}
-                        <a href="/category/{{ group.id }}/page/1/"
+                        <a href="/category/{{ group.id }}"
                            class="list-group-item active">{{ group.group_name.lower }}</a>
                     {% else %}
-                        <a href="/category/{{ group.id }}/page/1/"
+                        <a href="/category/{{ group.id }}"
                            class="list-group-item">{{ group.group_name.lower }}</a>
                     {% endif %}
                 {% endfor %}
@@ -46,7 +46,6 @@
                     <div class="col-sm-6 col-md-4">
                         <div class="thumbnail">
                             {% if good.good_image %}
-                                {{ good.good_image.url }}
                                 <img src="{{ good.good_image.url }}" width="250" height="200">
                             {% else %}
                                 <img src="{% static 'img/blank.jpg' %}" width="250" height="200">
@@ -80,7 +79,7 @@
             <ul class="pagination">
                 {% if goods.paginator.num_pages > 1 %}
                     {% if goods.has_previous %}
-                        <li><a href="/category/{{ current_group }}/page/{{ goods.previous_page_number }}/">&laquo;</a></li>
+                        <li><a href="?p={{ goods.previous_page_number }}">&laquo;</a></li>
                     {% else %}
                         <li class="disabled"><a href="#">&laquo;</a></li>
                     {% endif %}
@@ -89,12 +88,12 @@
                         {% if page == goods.number %}
                             <li class="active"><a>{{ page }}</a></li>
                         {% else %}
-                            <li><a href="/category/{{ current_group }}/page/{{ page }}/">{{ page }}</a></li>
+                            <li><a href="?p={{ page }}">{{ page }}</a></li>
                         {% endif %}
                     {% endfor %}
 
                     {% if goods.has_next %}
-                        <li><a href="/category/{{current_group}}/page/{{ goods.next_page_number }}/">&raquo;</a></li>
+                        <li><a href="?p={{ goods.next_page_number }}">&raquo;</a></li>
                     {% else %}
                         <li class="disabled"><a href="#">&raquo;</a></li>
                     {% endif %}
